@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -23,8 +24,7 @@
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"
             integrity="sha256-JLmknTdUZeZZ267LP9qB+/DT7tvxOOKctSKeUC2KT6E=" crossorigin="anonymous"></script>
-    <!--<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>-->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
 </head>
 <body>
 <div class="container" id="app">
@@ -68,7 +68,6 @@
                 <th>ラベル</th>
                 <th>ISBN</th>
                 <th>国立国会図書館</th>
-                <th>川崎市市民ミュージアム</th>
                 <th>明治大学米沢嘉博記念図書館</th>
                 <th>京都国際マンガミュージアム</th>
                 <th>大阪府立中央図書館国際児童文学館</th>
@@ -83,7 +82,6 @@
                 <td>{{ item.label.value }}</td>
                 <td>{{ item.isbn ? item.isbn.value : '' }}</td>
                 <td class="provider"><i :class="getIconClass(item.国立国会図書館.value)"></i></td>
-                <td class="provider"><i :class="getIconClass(item.川崎市市民ミュージアム.value)"></i></td>
                 <td class="provider"><i :class="getIconClass(item.明治大学米沢嘉博記念図書館.value)"></i></td>
                 <td class="provider"><i :class="getIconClass(item.京都国際マンガミュージアム.value)"></i></td>
                 <td class="provider"><i :class="getIconClass(item.大阪府立中央図書館国際児童文学館.value)"></i></td>
@@ -99,7 +97,7 @@
     </div>
 </div>
 <script>
-  const ENDPOINT_URL = 'https://mediag.bunka.go.jp.il3c.com/sparql';
+  const ENDPOINT_URL = 'https://sparql.metadata.moe/madb/query';
 
   function buildQueryBody(query) {
     const params = new URLSearchParams();
@@ -141,9 +139,8 @@
             PREFIX class:  <https://mediaarts-db.bunka.go.jp/data/class/>
             SELECT
               ?item ?itemId ?label ?isbn
-              ?国立国会図書館 ?川崎市市民ミュージアム ?明治大学米沢嘉博記念図書館 ?京都国際マンガミュージアム ?大阪府立中央図書館国際児童文学館 ?熊本県菊陽町図書館 ?北九州市漫画ミュージアム ?プランゲ文庫
+              ?国立国会図書館 ?明治大学米沢嘉博記念図書館 ?京都国際マンガミュージアム ?大阪府立中央図書館国際児童文学館 ?熊本県菊陽町図書館 ?北九州市漫画ミュージアム ?プランゲ文庫
               (GROUP_CONCAT(DISTINCT ?国立国会図書館_id ; separator="|") AS ?国立国会図書館_ids)
-              (GROUP_CONCAT(DISTINCT ?川崎市市民ミュージアム_id ; separator="|") AS ?川崎市市民ミュージアム_ids)
               (GROUP_CONCAT(DISTINCT ?明治大学米沢嘉博記念図書館_id ; separator="|") AS ?明治大学米沢嘉博記念図書館_ids)
               (GROUP_CONCAT(DISTINCT ?京都国際マンガミュージアム_id ; separator="|") AS ?京都国際マンガミュージアム_ids)
               (GROUP_CONCAT(DISTINCT ?大阪府立中央図書館国際児童文学館_id ; separator="|") AS ?大阪府立中央図書館国際児童文学館_ids)
@@ -163,7 +160,6 @@
               OPTIONAL { ?item schema:datePublished ?datePublished }
               OPTIONAL { ?item schema:isbn ?isbn }
               OPTIONAL { ?item schema:provider [ ma:ownerIdentifier "2" ; ma:entryIdentifier ?国立国会図書館_id ] }
-              OPTIONAL { ?item schema:provider [ ma:ownerIdentifier "3" ; ma:entryIdentifier ?川崎市市民ミュージアム_id ] }
               OPTIONAL { ?item schema:provider [ ma:ownerIdentifier "4" ; ma:entryIdentifier ?明治大学米沢嘉博記念図書館_id ] }
               OPTIONAL { ?item schema:provider [ ma:ownerIdentifier "5" ; ma:entryIdentifier ?京都国際マンガミュージアム_id ] }
               OPTIONAL { ?item schema:provider [ ma:ownerIdentifier "6" ; ma:entryIdentifier ?大阪府立中央図書館国際児童文学館_id ] }
@@ -172,7 +168,6 @@
               OPTIONAL { ?item schema:provider [ ma:ownerIdentifier "13" ; ma:entryIdentifier ?プランゲ文庫_id ] }
 
               BIND (IF(EXISTS { ?item schema:provider [ ma:ownerIdentifier "2" ] }, true, false) AS ?国立国会図書館)
-              BIND (IF(EXISTS { ?item schema:provider [ ma:ownerIdentifier "3" ] }, true, false) AS ?川崎市市民ミュージアム)
               BIND (IF(EXISTS { ?item schema:provider [ ma:ownerIdentifier "4" ] }, true, false) AS ?明治大学米沢嘉博記念図書館)
               BIND (IF(EXISTS { ?item schema:provider [ ma:ownerIdentifier "5" ] }, true, false) AS ?京都国際マンガミュージアム)
               BIND (IF(EXISTS { ?item schema:provider [ ma:ownerIdentifier "6" ] }, true, false) AS ?大阪府立中央図書館国際児童文学館)
@@ -182,7 +177,7 @@
             }
             GROUP BY
               ?item ?itemId ?label ?datePublished ?isbn
-              ?国立国会図書館 ?川崎市市民ミュージアム ?明治大学米沢嘉博記念図書館 ?京都国際マンガミュージアム ?大阪府立中央図書館国際児童文学館 ?熊本県菊陽町図書館 ?北九州市漫画ミュージアム ?プランゲ文庫
+              ?国立国会図書館 ?明治大学米沢嘉博記念図書館 ?京都国際マンガミュージアム ?大阪府立中央図書館国際児童文学館 ?熊本県菊陽町図書館 ?北九州市漫画ミュージアム ?プランゲ文庫
             ORDER BY ?datePublished
         `;
         axios.post(ENDPOINT_URL, buildQueryBody(query))
@@ -237,7 +232,6 @@
             'ラベル',
             'ISBN',
             '国立国会図書館_登録番号',
-            '川崎市市民ミュージアム_登録番号',
             '明治大学米沢嘉博記念図書館_登録番号',
             '京都国際マンガミュージアム_登録番号',
             '大阪府立中央図書館国際児童文学館_登録番号',
@@ -253,7 +247,6 @@
             item.label.value,
             item.isbn ? item.isbn.value : '',
             item.国立国会図書館_ids ? item.国立国会図書館_ids.value : '',
-            item.川崎市市民ミュージアム_ids ? item.川崎市市民ミュージアム_ids.value : '',
             item.明治大学米沢嘉博記念図書館_ids ? item.明治大学米沢嘉博記念図書館_ids.value : '',
             item.京都国際マンガミュージアム_ids ? item.京都国際マンガミュージアム_ids.value : '',
             item.大阪府立中央図書館国際児童文学館_ids ? item.大阪府立中央図書館国際児童文学館_ids.value : '',
